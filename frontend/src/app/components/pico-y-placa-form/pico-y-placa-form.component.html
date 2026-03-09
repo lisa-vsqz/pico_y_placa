@@ -1,0 +1,159 @@
+<section class="form-section">
+  <div class="card">
+    <h2 class="card-title">Consultar restricción vehicular</h2>
+    <p class="card-description">
+      Ingrese el número de placa y la fecha con hora para verificar si el
+      vehículo puede circular.
+    </p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Campo: Número de placa -->
+      <div class="form-group">
+        <label for="plateNumber" class="form-label">
+          Número de placa
+          <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="plateNumber"
+          formControlName="plateNumber"
+          class="form-input"
+          [class.input-error]="plateControl?.invalid && plateControl?.touched"
+          placeholder="Ej: PBX-1234"
+          maxlength="8"
+          autocomplete="off"
+          (input)="onPlateInput($event)"
+        />
+        <div
+          class="error-messages"
+          *ngIf="plateControl?.invalid && plateControl?.touched"
+        >
+          <small class="error-text" *ngIf="plateControl?.errors?.['required']">
+            El número de placa es obligatorio.
+          </small>
+          <small class="error-text" *ngIf="plateControl?.errors?.['pattern']">
+            Formato inválido. Use: ABC-1234 (3 letras, guión, 3 o 4 dígitos).
+          </small>
+        </div>
+        <small class="hint-text"
+          >Formato: 3 letras + guión + 3 o 4 dígitos (Ej: PBX-1234)</small
+        >
+      </div>
+
+      <!-- Campo: Fecha y hora -->
+      <div class="form-group">
+        <label for="dateTime" class="form-label">
+          Fecha y hora
+          <span class="required">*</span>
+        </label>
+        <input
+          type="datetime-local"
+          id="dateTime"
+          formControlName="dateTime"
+          class="form-input"
+          [class.input-error]="
+            dateTimeControl?.invalid && dateTimeControl?.touched
+          "
+          [min]="minDateTime"
+        />
+        <div
+          class="error-messages"
+          *ngIf="dateTimeControl?.invalid && dateTimeControl?.touched"
+        >
+          <small
+            class="error-text"
+            *ngIf="dateTimeControl?.errors?.['required']"
+          >
+            La fecha y hora son obligatorias.
+          </small>
+          <small
+            class="error-text"
+            *ngIf="dateTimeControl?.errors?.['dateInPast']"
+          >
+            La fecha y hora no pueden ser anteriores a la actual.
+          </small>
+        </div>
+        <small class="hint-text"
+          >Seleccione una fecha y hora actual o futura</small
+        >
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner"></span>
+          {{ isLoading ? "Consultando..." : "Consultar" }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onReset()"
+          [disabled]="isLoading"
+        >
+          Limpiar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Resultado -->
+  <div
+    class="result-card"
+    *ngIf="result"
+    [class.can-drive]="result.canDrive"
+    [class.cannot-drive]="!result.canDrive"
+  >
+    <div class="result-icon">
+      {{ result.canDrive ? "✅" : "🚫" }}
+    </div>
+    <div class="result-content">
+      <h3 class="result-title">
+        {{ result.canDrive ? "Puede circular" : "No puede circular" }}
+      </h3>
+      <p class="result-plate">
+        Placa: <strong>{{ result.plateNumber }}</strong>
+      </p>
+      <p class="result-message">{{ result.message }}</p>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="error-card" *ngIf="errorMessage">
+    <div class="error-icon">⚠️</div>
+    <div class="error-content">
+      <h3>Error en la consulta</h3>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+
+  <!-- Información de reglas -->
+  <div class="info-card">
+    <h3 class="info-title">📋 Reglas vigentes de Pico y Placa</h3>
+    <div class="rules-grid">
+      <div class="rule-item">
+        <span class="rule-day">Lunes</span>
+        <span class="rule-digits">Placas: 1, 2</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-day">Martes</span>
+        <span class="rule-digits">Placas: 3, 4</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-day">Miércoles</span>
+        <span class="rule-digits">Placas: 5, 6</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-day">Jueves</span>
+        <span class="rule-digits">Placas: 7, 8</span>
+      </div>
+      <div class="rule-item">
+        <span class="rule-day">Viernes</span>
+        <span class="rule-digits">Placas: 9, 0</span>
+      </div>
+    </div>
+    <p class="info-schedule">
+      <strong>Horarios de restricción:</strong> 07:00–09:30 y 16:00–19:30
+    </p>
+    <p class="info-note">Sábados y domingos no aplica restricción.</p>
+  </div>
+</section>
