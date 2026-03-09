@@ -4,5 +4,5 @@
  */
 export const environment = {
   production: true,
-  apiUrl: "https://your-backend-url.onrender.com/api/v1",
+  apiUrl: "https://pico-y-placa-api.onrender.com/api/v1",
 };

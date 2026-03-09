@@ -369,13 +369,13 @@ El proyecto está preparado para desplegarse en **Render.com** con la siguiente 
 
 El proyecto cuenta con un pipeline de **Integración Continua** implementado con **GitHub Actions** (`.github/workflows/ci.yml`) que se ejecuta automáticamente en cada push a `main` y en pull requests.
 
-| Job | Descripción | Herramientas |
-|---|---|---|
-| **Backend Build & Test** | Compila el proyecto Spring Boot y ejecuta los 69 tests unitarios e integración | Java 17, Maven |
-| **Frontend Build & Test** | Instala dependencias, genera el bundle de producción y ejecuta tests | Node.js 20, Angular CLI |
-| **Security Scan (CodeQL)** | Análisis estático de seguridad (SAST) sobre código Java y TypeScript | GitHub CodeQL |
-| **Dependency Scan** | Escaneo de vulnerabilidades en dependencias con OWASP Dependency Check y npm audit | OWASP, npm |
-| **Docker Build** | Valida que el Dockerfile del backend construye correctamente la imagen | Docker |
+| Job                        | Descripción                                                                        | Herramientas            |
+| -------------------------- | ---------------------------------------------------------------------------------- | ----------------------- |
+| **Backend Build & Test**   | Compila el proyecto Spring Boot y ejecuta los 69 tests unitarios e integración     | Java 17, Maven          |
+| **Frontend Build & Test**  | Instala dependencias, genera el bundle de producción y ejecuta tests               | Node.js 20, Angular CLI |
+| **Security Scan (CodeQL)** | Análisis estático de seguridad (SAST) sobre código Java y TypeScript               | GitHub CodeQL           |
+| **Dependency Scan**        | Escaneo de vulnerabilidades en dependencias con OWASP Dependency Check y npm audit | OWASP, npm              |
+| **Docker Build**           | Valida que el Dockerfile del backend construye correctamente la imagen             | Docker                  |
 
 **Paralelismo:** Los jobs de backend, frontend, seguridad y dependencias se ejecutan en paralelo. El build de Docker espera a que el backend compile exitosamente.
 
