@@ -1,5 +1,7 @@
 # Pico y Placa — Sistema de Consulta de Restricción Vehicular
 
+[![CI Pipeline](https://github.com/lisa-vsqz/pico_y_placa/actions/workflows/ci.yml/badge.svg)](https://github.com/lisa-vsqz/pico_y_placa/actions/workflows/ci.yml)
+
 Sistema web full-stack para consultar si un vehículo puede circular en Quito, Ecuador, según las reglas de **Pico y Placa**, basándose en el último dígito de la placa, la fecha y la hora.
 
 **Stack tecnológico:** Angular 18 · Spring Boot 3.2 · Java 17 · Docker
@@ -365,14 +367,19 @@ El proyecto está preparado para desplegarse en **Render.com** con la siguiente 
 
 ## CI/CD
 
-El proyecto contempla la implementación de un pipeline de CI/CD con **GitHub Actions** que automatice:
+El proyecto cuenta con un pipeline de **Integración Continua** implementado con **GitHub Actions** (`.github/workflows/ci.yml`) que se ejecuta automáticamente en cada push a `main` y en pull requests.
 
-1. **Build del backend** — compilación con Maven y empaquetado del JAR
-2. **Build del frontend** — instalación de dependencias y build de producción Angular
-3. **Ejecución de tests** — tests unitarios del backend (69 tests) y frontend
-4. **Validación de calidad** — verificación de que el build es exitoso y los tests pasan antes de permitir merge a `main`
+| Job | Descripción | Herramientas |
+|---|---|---|
+| **Backend Build & Test** | Compila el proyecto Spring Boot y ejecuta los 69 tests unitarios e integración | Java 17, Maven |
+| **Frontend Build & Test** | Instala dependencias, genera el bundle de producción y ejecuta tests | Node.js 20, Angular CLI |
+| **Security Scan (CodeQL)** | Análisis estático de seguridad (SAST) sobre código Java y TypeScript | GitHub CodeQL |
+| **Dependency Scan** | Escaneo de vulnerabilidades en dependencias con OWASP Dependency Check y npm audit | OWASP, npm |
+| **Docker Build** | Valida que el Dockerfile del backend construye correctamente la imagen | Docker |
 
-El pipeline se ejecutará automáticamente en cada push y pull request, asegurando que el código en la rama principal siempre se encuentre en estado funcional.
+**Paralelismo:** Los jobs de backend, frontend, seguridad y dependencias se ejecutan en paralelo. El build de Docker espera a que el backend compile exitosamente.
+
+**Resultados de seguridad:** Los hallazgos de CodeQL aparecen en la pestaña **Security → Code scanning alerts** del repositorio en GitHub. El reporte OWASP se genera como artefacto descargable del workflow.
 
 ---
 
