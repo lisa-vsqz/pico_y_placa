@@ -42,6 +42,16 @@ jobs:
           path: backend/target/surefire-reports/
           retention-days: 7
 
+      - name: Upload coverage to Codecov
+        if: success()
+        uses: codecov/codecov-action@v4
+        with:
+          files: backend/target/site/jacoco/jacoco.xml
+          flags: backend
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
   # ─────────────────────────────────────────────
   # Frontend: Build & Test
   # ─────────────────────────────────────────────

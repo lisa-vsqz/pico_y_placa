@@ -1,6 +1,7 @@
 # Pico y Placa — Sistema de Consulta de Restricción Vehicular
 
 [![CI Pipeline](https://github.com/lisa-vsqz/pico_y_placa/actions/workflows/ci.yml/badge.svg)](https://github.com/lisa-vsqz/pico_y_placa/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/lisa-vsqz/pico_y_placa/branch/main/graph/badge.svg)](https://codecov.io/gh/lisa-vsqz/pico_y_placa)
 
 Sistema web full-stack para consultar si un vehículo puede circular en Quito, Ecuador, según las reglas de **Pico y Placa**, basándose en el último dígito de la placa, la fecha y la hora.
 
@@ -371,13 +372,15 @@ El proyecto cuenta con un pipeline de **Integración Continua** implementado con
 
 | Job                        | Descripción                                                                        | Herramientas            |
 | -------------------------- | ---------------------------------------------------------------------------------- | ----------------------- |
-| **Backend Build & Test**   | Compila el proyecto Spring Boot y ejecuta los 69 tests unitarios e integración     | Java 17, Maven          |
+| **Backend Build & Test**   | Compila el proyecto Spring Boot, ejecuta los 69 tests y genera reporte de cobertura | Java 17, Maven, JaCoCo  |
 | **Frontend Build & Test**  | Instala dependencias, genera el bundle de producción y ejecuta tests               | Node.js 20, Angular CLI |
 | **Security Scan (CodeQL)** | Análisis estático de seguridad (SAST) sobre código Java y TypeScript               | GitHub CodeQL           |
 | **Dependency Scan**        | Escaneo de vulnerabilidades en dependencias con OWASP Dependency Check y npm audit | OWASP, npm              |
 | **Docker Build**           | Valida que el Dockerfile del backend construye correctamente la imagen             | Docker                  |
 
 **Paralelismo:** Los jobs de backend, frontend, seguridad y dependencias se ejecutan en paralelo. El build de Docker espera a que el backend compile exitosamente.
+
+**Cobertura de código:** El backend genera reportes de cobertura con JaCoCo que se suben automáticamente a [Codecov](https://codecov.io/gh/lisa-vsqz/pico_y_placa). El badge de cobertura se muestra en la parte superior del README.
 
 **Resultados de seguridad:** Los hallazgos de CodeQL aparecen en la pestaña **Security → Code scanning alerts** del repositorio en GitHub. El reporte OWASP se genera como artefacto descargable del workflow.
 
